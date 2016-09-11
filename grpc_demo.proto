@@ -1,0 +1,71 @@
+// Copyright 2016 Yoshihiro Tanaka
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package grpcdemo;
+
+service GrpcDemo {
+
+    rpc Demo(Request) returns (Response) {}
+
+    rpc RepeatedDemo(RepeatedRequest) returns (RepeatedResponse) {}
+
+    rpc StreamDemo(stream StreamRequest) returns (stream StreamResponse) {}
+
+}
+
+message Request {
+    string Nonce = 1;
+    map<string, Object> MapDemo = 2;
+    oneof OneOfDemo {
+        double DoubleDemo = 3;
+        float FloatDemo = 4;
+    }
+}
+
+message Response {
+    string Nonce = 1;
+    bytes BytesDemo = 2;
+    Enum EnumDemo = 3;
+}
+
+enum Enum {
+    DEMO1 = 0;
+    DEMO2 = 1;
+}
+
+message Object {
+    string StringDemo = 1;
+}
+
+message RepeatedRequest {
+    string Nonce = 1;
+    repeated int32 IntDemo = 2;
+    repeated Object ObjectDemo = 3;
+}
+
+message RepeatedResponse {
+    string Nonce = 1;
+    repeated string StringDemo = 2;
+}
+
+message StreamRequest {
+    string Nonce = 1;
+    float FloatDemo = 2;
+}
+
+message StreamResponse {
+    string Nonce = 1;
+    Enum EnumDemo = 2;
+}
