@@ -24,13 +24,12 @@ module GrpcDemoImpl =
                 |> Task.FromResult
 
         override this.StreamDemo(requestStream : IAsyncStreamReader<StreamRequest>, responseStream : IServerStreamWriter<StreamResponse>, context : ServerCallContext) =
-            Task.Run(
-                fun _ ->
-                    Console.WriteLine("----received----")
-                    while requestStream.MoveNext(Threading.CancellationToken.None) |> Async.AwaitTask |> Async.RunSynchronously do
-                        let request = requestStream.Current
-                        StreamResponse(Nonce = request.Nonce, EnumDemo = Enum.Demo2)
-                            |> responseStream.WriteAsync
-                            |> Async.AwaitTask
-                            |> Async.RunSynchronously
-            )
+            fun () ->
+                Console.WriteLine("----received----")
+                while requestStream.MoveNext(Threading.CancellationToken.None) |> Async.AwaitTask |> Async.RunSynchronously do
+                    let request = requestStream.Current
+                    StreamResponse(Nonce = request.Nonce, EnumDemo = Enum.Demo2)
+                        |> responseStream.WriteAsync
+                        |> Async.AwaitTask
+                        |> Async.RunSynchronously
+            |> Task.Run
