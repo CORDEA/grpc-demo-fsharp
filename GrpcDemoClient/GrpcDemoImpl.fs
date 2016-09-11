@@ -30,19 +30,19 @@ module GrpcDemoImpl =
                 |> Console.WriteLine
 
         member this.StreamDemo() =
-            let ay = client.StreamDemo()
+            let streamDemo = client.StreamDemo()
             for i = 0 to 10 do
                 new StreamRequest(Nonce = GrpcDemoUtils.getNonce(), FloatDemo = 0.0f)
                         |> fun x ->
                             String.Format("request{0}: {1}", i, x.Nonce)
                             |> Console.WriteLine
                             x
-                        |> ay.RequestStream.WriteAsync
+                        |> streamDemo.RequestStream.WriteAsync
                         |> Async.AwaitTask
                         |> Async.RunSynchronously
-            ay.RequestStream.CompleteAsync().Wait()
+            streamDemo.RequestStream.CompleteAsync().Wait()
 
-            let stream = ay.ResponseStream
+            let stream = streamDemo.ResponseStream
             let mutable i = 0
             while stream.MoveNext(Threading.CancellationToken.None) |> Async.AwaitTask |> Async.RunSynchronously do
                 stream.Current
