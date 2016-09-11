@@ -11,11 +11,11 @@ module GrpcDemoImpl =
         inherit GrpcDemo.GrpcDemoBase()
 
         override this.Demo(request: Request, context : ServerCallContext) : Task<Response> =
-            Console.WriteLine("----received----")
+            Console.WriteLine("---- Received request to the Demo ----")
             new Response(Nonce = request.Nonce, BytesDemo = ByteString.CopyFromUtf8("test"), EnumDemo = Enum.Demo1) |> Task.FromResult
 
         override this.RepeatedDemo(request : RepeatedRequest, context : ServerCallContext) : Task<RepeatedResponse> =
-            Console.WriteLine("----received----")
+            Console.WriteLine("---- Received request to the RepeatedDemo ----")
             new RepeatedResponse(Nonce = request.Nonce)
                 |> fun x ->
                     for i = 0 to 10 do
@@ -25,7 +25,7 @@ module GrpcDemoImpl =
 
         override this.StreamDemo(requestStream : IAsyncStreamReader<StreamRequest>, responseStream : IServerStreamWriter<StreamResponse>, context : ServerCallContext) =
             fun () ->
-                Console.WriteLine("----received----")
+                Console.WriteLine("---- Received request to the StreamDemo ----")
                 while requestStream.MoveNext(Threading.CancellationToken.None) |> Async.AwaitTask |> Async.RunSynchronously do
                     let request = requestStream.Current
                     StreamResponse(Nonce = request.Nonce, EnumDemo = Enum.Demo2)
