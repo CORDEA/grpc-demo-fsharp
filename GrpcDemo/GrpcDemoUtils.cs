@@ -4,16 +4,19 @@ namespace Grpcdemo
 {
     public class GrpcDemoUtils
     {
-        private static Random random = new Random();
+        private static Random Random { get; } = new Random();
 
-        public static string getNonce()
+        public static string Nonce
         {
-            string s = "";
-            for (int i = 0; i < 5; i++)
+            get
             {
-                s += (char)('a' + random.Next(0, 26));
+                var s = string.Empty;
+                for (var i = 0; i < 5; i++)
+                {
+                    s += (char) ('a' + Random.Next(0, 26));
+                }
+                return s;
             }
-            return s;
         }
     }
 }

@@ -9,7 +9,7 @@ module GrpcDemoImpl =
     type GrpcDemoImpl(client: GrpcDemo.GrpcDemoClient) =
         
         member this.Demo() =
-            let nonce = GrpcDemoUtils.getNonce()
+            let nonce = GrpcDemoUtils.Nonce
             Console.WriteLine("request: " + nonce)
             let obj = new Grpcdemo.Object(StringDemo = "test")
             let request = new Request(Nonce = nonce, FloatDemo = 0.0f)
@@ -17,7 +17,7 @@ module GrpcDemoImpl =
             client.Demo(request) |> fun x -> String.Format("response: {0}", x.Nonce) |> Console.WriteLine
 
         member this.RepeatedDemo() =
-            let nonce = GrpcDemoUtils.getNonce()
+            let nonce = GrpcDemoUtils.Nonce
             Console.WriteLine("request: " + nonce)
             new RepeatedRequest(Nonce = nonce)
                 |> fun x ->
@@ -32,7 +32,7 @@ module GrpcDemoImpl =
         member this.StreamDemo() =
             let streamDemo = client.StreamDemo()
             for i = 0 to 10 do
-                new StreamRequest(Nonce = GrpcDemoUtils.getNonce(), FloatDemo = 0.0f)
+                new StreamRequest(Nonce = GrpcDemoUtils.Nonce, FloatDemo = 0.0f)
                         |> fun x ->
                             String.Format("request{0}: {1}", i, x.Nonce)
                             |> Console.WriteLine
